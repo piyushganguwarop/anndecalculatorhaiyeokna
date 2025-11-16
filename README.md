@@ -1,138 +1,122 @@
-# 🥚 Egg Counter Bot (Testing Phase)
+# Egg Counter Bot  
+### Realtime Discord Egg Tracking System
 
-Egg Counter Bot is a Discord bot designed to count how many eggs you opened in a game by scanning webhook messages inside a specific channel.  
-The project is **still in testing**, will evolve over time, and is **not affiliated with SpeedHubX**.
-
-If you encounter any issue, feel free to contact me on Discord: **@darkhii1**.
-
-Regular updates will be released.
+A minimal, efficient, and extensible Discord bot designed to track egg hatch events in real time.  
+Built with performance, accuracy, and simplicity in mind.
 
 ---
 
-# ⭐ Features
-- Slash command: `/egg`
-- Counts multiple egg types:
-  - Paradise
-  - Safari
-  - All (combined)
-- Flexible time filters:
-  - today
-  - 24h, 36h, 48h
-  - one day
-  - 2 days, 3 days
-  - week
-- Global correction multiplier for missing logs (`LOSS_MULT`)
-- Timezone support
-- Configurable with a `.env` file
-- Works on any computer with Python 3
+## Overview
+
+Egg Counter Bot monitors a specific Discord channel, identifies egg-related messages, and tracks hatch counts both in real-time and across message history.  
+Using a lightweight SQLite database, it stores daily totals, supports history lookups, and delivers a daily summary report automatically.
+
+This project prioritizes:  
+- Fast message processing  
+- Clean code structure  
+- Low resource usage  
+- Accurate and consistent egg tracking  
 
 ---
 
-# 📘 How to Set Up and Use Egg Counter Bot
+## Features
 
-This guide explains how anyone can download, configure, and run the bot on their own Discord server.
+### Realtime Tracking  
+The bot updates egg counts the moment new messages are received.  
+Counts persist across restarts.
+
+### History Scanning  
+Commands allow scanning message history for:  
+- Today  
+- Last 24 hours  
+- Last N hours  
+- Last N days  
+- Last week  
+- All-time (from persistent database)
+
+### Automatic Egg Type Detection  
+If users mention new egg types, the bot identifies them dynamically and stores them permanently.
+
+### Daily Report  
+At local midnight, the bot:  
+1. Sends a private summary report to the configured user  
+2. Stores metrics for the day  
+3. Cleans data older than 14 days  
+4. Resets today’s counters (optional)
+
+### SQLite Persistence  
+All egg types and daily totals are retained.  
+No external database is required.
+
+### Administration Tools  
+Admins may:  
+- Add new egg types  
+- Remove existing ones  
+- Assign custom emojis  
+- Reset counters  
+Directly through slash commands.
+
+### Clean Embedded Output  
+Reports and command outputs are formatted using consistent, minimal embeds.
 
 ---
 
-# 🟦 1. Requirements
-- Discord account  
-- Discord server with permission to add bots  
-- Python 3.10+  
-- (Optional) Git  
+## Installation
 
----
-
-# 🟩 2. Download the project
-
-## Option A — Clone with Git
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/darkhii1/egg-counter-bot.git
+git clone https://github.com/YOUR-USERNAME/egg-counter-bot.git
 cd egg-counter-bot
 ```
 
-## Option B — Download ZIP
-1. Download ZIP from GitHub  
-2. Extract it  
-3. Open a terminal in the extracted folder  
-
----
-
-# 🟧 3. Install dependencies
+# 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
+# 3. Configure Environment Variables
 
----
-
-# 🟥 4. Create your own Discord bot
-
-1. Go to https://discord.com/developers/applications  
-2. Create a new application  
-3. Go to **Bot → Add Bot**  
-4. Copy the **TOKEN**  
-5. Enable **MESSAGE CONTENT INTENT**  
-6. Go to **OAuth2 → URL Generator**  
-   - Scopes: `bot`, `applications.commands`  
-   - Permissions:  
-     - Read Messages  
-     - Read Message History  
-     - Send Messages  
-7. Invite the bot to your server  
-
----
-
-# 🟨 5. Configure the `.env` file
-
-Duplicate the example file:
+Create a .env file in the project directory:
 
 ```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-
-```
-DISCORD_TOKEN=YOUR_BOT_TOKEN
-GUILD_ID=YOUR_SERVER_ID
+DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN
 CHANNEL_ID=YOUR_CHANNEL_ID
-ONLY_WEBHOOK=1
-TZ_OFFSET_HOURS=1
-EGG_PARADISE_PATTERN=(?i)paradise
-EGG_SAFARI_PATTERN=(?i)safari
-LOSS_MULT=1.0
+GUILD_ID=YOUR_GUILD_ID
+REPORT_USER_ID=YOUR_USER_ID
+TZ_OFFSET_HOURS=5.5
+
+ONLY_WEBHOOK=0
 ```
-
----
-
-# 🟦 6. Run the bot
+# 4. Start the Bot
 ```bash
 python main.py
 ```
+#Commands 
 
----
+/egg
 
-# 🟩 7. Using `/egg`
+Count egg hatches for any timeframe.
 
 Examples:
 
-```
 /egg
-/egg egg_type:safari
+
+/egg egg_type:paradise
+
 /egg when:24h
-/egg egg_type:paradise when:36h
-```
 
----
+/egg when:7d
 
-# 🟪 8. Troubleshooting
-- Check `.env` values  
-- Verify bot permissions  
-- Ensure correct server and channel IDs  
+/egg_trend
 
-For help, contact **@darkhii1** on Discord.
+Compare today’s total vs yesterday.
 
----
+Admin Commands
 
-# 🟫 9. Disclaimer
-This project is **not affiliated with SpeedHubX**.  
-It is in **testing phase**. Updates will be released regularly.
+/egg_addtype name pattern emoji?
+
+/egg_removetype name
+
+/egg_setemoji name emoji
+
+/egg_reset [name]
+
