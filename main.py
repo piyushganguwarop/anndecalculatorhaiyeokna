@@ -21,7 +21,7 @@ GUILD_ID = int(os.environ["GUILD_ID"])
 REPORT_USER_ID = int(os.environ.get("REPORT_USER_ID", "781091697106223104"))
 
 ONLY_WEBHOOK = os.environ.get("ONLY_WEBHOOK", "0") == "1"
-TZ_OFFSET = float(os.environ.get("TZ_OFFSET_HOURS", "0"))  # e.g. 5.5
+TZ_OFFSET = float(os.environ.get("TZ_OFFSET_HOURS", "5.5"))  # e.g. 5.5
 RESET_AFTER_REPORT = True
 KEEP_DAYS = 14
 
